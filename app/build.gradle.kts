@@ -30,13 +30,23 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
-
+val nav_version = "2.8.1"
+val lottieVersion = "6.5.2"
 dependencies {
 
+
+    implementation ("com.tbuonomo:dotsindicator:4.3")
+    implementation ("com.google.android.material:material:1.8.0")
+    implementation ("com.airbnb.android:lottie:$lottieVersion")
+    implementation("androidx.navigation:navigation-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:$nav_version")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
