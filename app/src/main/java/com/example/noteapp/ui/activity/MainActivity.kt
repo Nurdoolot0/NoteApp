@@ -1,6 +1,7 @@
 package com.example.noteapp.ui.activity
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -26,5 +27,15 @@ class MainActivity : AppCompatActivity() {
         } else {
             navController.navigate(R.id.noteFragment)
         }
-    }
+    onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val currentFragment = navController.currentDestination?.id
+            if (currentFragment == R.id.noteFragment) {
+                finish()
+            } else {
+                navController.navigateUp()
+            }
+        }
+    })
+}
 }
