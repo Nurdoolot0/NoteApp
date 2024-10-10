@@ -54,7 +54,6 @@ class OnBoardFragment : Fragment() {
             }
         })
 
-
         binding.txtSkip.setOnClickListener {
             if (currentItem < 2) {
                 setCurrentItem(currentItem + 2, true)
