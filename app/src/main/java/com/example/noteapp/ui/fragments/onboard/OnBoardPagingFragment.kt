@@ -11,12 +11,11 @@ import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentOnBoardPagingBinding
 
 class OnBoardPagingFragment : Fragment() {
-    private lateinit var binding: FragmentOnBoardPagingBinding
 
+    private lateinit var binding: FragmentOnBoardPagingBinding
 
     companion object {
         const val ARG_POSITION = "position"
-
         fun newInstance(position: Int): OnBoardPagingFragment {
             val fragment = OnBoardPagingFragment()
             val args = Bundle()
@@ -61,7 +60,5 @@ class OnBoardPagingFragment : Fragment() {
                 txtDescription.text = "Синхронизация на всех устройствах. Доступ к записям в любое время и в любом месте."
             }
         }
-
     }
-
 }
