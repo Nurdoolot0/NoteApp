@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -41,7 +42,7 @@ val nav_version = "2.8.1"
 val lottieVersion = "6.5.2"
 dependencies {
 
-
+    implementation ("androidx.cardview:cardview:1.0.0")
     implementation ("com.tbuonomo:dotsindicator:4.3")
     implementation ("com.google.android.material:material:1.8.0")
     implementation ("com.airbnb.android:lottie:$lottieVersion")
@@ -55,4 +56,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 }

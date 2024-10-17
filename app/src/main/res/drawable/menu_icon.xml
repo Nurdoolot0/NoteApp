@@ -1,0 +1,34 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:top="42px" android:left="327px">
+        <shape android:shape="rectangle">
+            <size android:width="8px" android:height="8.89dp"/>
+            <solid android:color="#DADADA"/>
+        </shape>
+    </item>
+
+    <!-- Верхний правый квадрат -->
+    <item android:top="42px" android:left="337px">
+        <shape android:shape="rectangle">
+            <size android:width="8px" android:height="5.33dp"/>
+            <solid android:color="#DADADA"/>
+        </shape>
+    </item>
+
+    <!-- Нижний левый квадрат -->
+    <item android:top="52.67px" android:left="327px">
+        <shape android:shape="rectangle">
+            <size android:width="8dp" android:height="5.33dp"/>
+            <solid android:color="#DADADA"/>
+        </shape>
+    </item>
+
+    <!-- Нижний правый квадрат -->
+    <item android:top="49.11dp" android:left="337px">
+        <shape android:shape="rectangle">
+            <size android:width="8dp" android:height="8.89dp"/>
+            <solid android:color="#DADADA"/>
+        </shape>
+    </item>
+
+</layer-list>
