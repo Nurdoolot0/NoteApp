@@ -5,18 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.noteapp.App
+import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNoteBinding
-import com.example.noteapp.models.Note
 import com.example.noteapp.ui.adapters.NoteAdapter
 
 class NoteFragment : Fragment() {
 
     private lateinit var binding: FragmentNoteBinding
-    private lateinit var noteAdapter: NoteAdapter
-    private lateinit var noteList: List<Note>
-    private var filteredNoteList: List<Note> = listOf()
+    private val noteAdapter = NoteAdapter()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,43 +25,33 @@ class NoteFragment : Fragment() {
         binding = FragmentNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        noteList = getNotes()
-        noteAdapter = NoteAdapter(noteList)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = noteAdapter
-        setupSearchView()
-    }
-    private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        initialize()
+        setupListeners()
+        getData()
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterNotes(newText)
-                return true
-            }
-        })
     }
 
-    private fun filterNotes(query: String?) {
-        filteredNoteList = if (query.isNullOrEmpty()) {
-            noteList
-        } else {
-            noteList.filter {
-                it.title.contains(query, ignoreCase = true) ||
-                        it.content.contains(query, ignoreCase = true)
-            }
+
+    private fun initialize() {
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = noteAdapter
         }
-        noteAdapter.updateList(filteredNoteList)
     }
-    private fun getNotes(): List<Note> {
-        return listOf(
-            Note("План на жизнь", "Посадить сына, вырастить дом, построить дерево. Нужно...", "31 мая 12:45", "Личная"),
-            Note("Нужно сделать", "Работы с проектом, сделать домашку, построить бизнес и...", "31 мая 12:45", "Работа"),
-            Note("Нужно сделать", "Работы с проектом, сделать домашку, построить бизнес и...", "31 мая 12:45", "Другое")
-        )
+
+    private fun setupListeners() = with(binding) {
+        addBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_noteFragment_to_noteDetailFragment)
+        }
+
+    }
+
+    private fun getData() {
+        App.appDataBase?.noteDao()?.getAll()?.observe(viewLifecycleOwner) { listNote ->
+            noteAdapter.submitList(listNote)
+        }
     }
 }

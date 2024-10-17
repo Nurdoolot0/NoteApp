@@ -1,33 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
-    android:orientation="vertical"
     android:background="#252525"
+    android:orientation="vertical"
     tools:context=".ui.fragments.note.NoteFragment">
 
-
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/search_view_background"
-        android:iconifiedByDefault="true"
-        app:backgroundTint="#535353"
-        android:hint="Поиск заметок"
-        app:searchHintIcon="@color/white"
-        android:layout_margin="16dp"
-        app:theme="@style/SearchViewStyle" />
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="19.71dp"
+            android:layout_marginBottom="50sp"
+            android:contentDescription="Menu"
+            android:src="@drawable/ic_menu"
+            app:tint="@android:color/white" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="10dp"
+            android:text="Все заметки"
+            android:textColor="#FFFFFF"
+            android:textSize="56px"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/menu_switch_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:layout_marginStart="67dp"
+            android:background="@drawable/menu_icon"
+            android:contentDescription="Переключение вида" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_note"
+            android:layout_width="370sp"
+            android:layout_height="60dp"
+            android:layout_marginStart="-365dp"
+            android:layout_marginTop="66dp"
+            android:background="@drawable/search_background"
+            android:queryHint="Поиск заметок" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/circle_button"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/color_accent"
+        android:src="@drawable/ic_add_new"
+        app:fabSize="normal" />
 
 
 </LinearLayout>
