@@ -10,6 +10,9 @@ import com.example.noteapp.App
 import com.example.noteapp.R
 import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.databinding.FragmentNoteDetailBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class NoteDetailFragment : Fragment() {
 
@@ -26,6 +29,13 @@ class NoteDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val currentDate = dateFormat.format(calendar.time)
+        val currentTime = timeFormat.format(calendar.time)
+        binding.tvDate.text = currentDate
+        binding.tvTime.text = currentTime
 
     }
 
