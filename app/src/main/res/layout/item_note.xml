@@ -32,12 +32,23 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
+
         <TextView
-            android:id="@+id/noteDateTime"
+            android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Дата и время"
+            android:text="Дата"
+            android:layout_marginTop="20sp"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="-15.9sp"
+            android:text="Время"
             android:textColor="@android:color/black"
             android:textSize="12sp" />
 
