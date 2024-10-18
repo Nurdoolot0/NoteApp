@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#5B5B5B"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выберите цвет"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:paddingBottom="16dp"/>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="2">
+
+        <View
+            android:id="@+id/colorButton1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#FF0000"
+            android:layout_margin="8dp"/>
+
+        <View
+            android:id="@+id/colorButton2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00FF00"
+            android:layout_margin="8dp"/>
+
+        <View
+            android:id="@+id/colorButton3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#0000FF"
+            android:layout_margin="8dp"/>
+
+        <View
+            android:id="@+id/colorButton4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#FFFF00"
+            android:layout_margin="8dp"/>
+
+        <View
+            android:id="@+id/colorButton5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#00FFFF"
+            android:layout_margin="8dp"/>
+
+        <View
+            android:id="@+id/colorButton6"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#FF00FF"
+            android:layout_margin="8dp"/>
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/deleteNoteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Удалить"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

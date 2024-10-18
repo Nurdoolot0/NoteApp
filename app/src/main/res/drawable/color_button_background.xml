@@ -1,0 +1,7 @@
+<!-- res/drawable/color_button_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="#FFF599"/>
+    <size
+        android:width="50dp"
+        android:height="50dp" />
+</shape>
