@@ -4,7 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="note_color1">#FF9E9E</color>
     <color name="note_color2">#FFF599</color>
-    <color name="note_color3">#91F48F</color>
+    <color name="color1">#E91C0D</color>
+    <color name="color2">#30E008</color>
+    <color name="color3">#0039C7</color>
+    <color name="color4">#FFEB3B</color>
+    <color name="color5">#3EFAFA</color>
+    <color name="color6">#D980FF</color>
 
 
 </resources>
