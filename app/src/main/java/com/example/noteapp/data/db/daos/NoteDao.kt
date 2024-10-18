@@ -19,12 +19,21 @@ interface NoteDao {
     fun getAll(): LiveData<List<NoteModel>>
 
     @Delete
-    fun deleteNote(noteModel: NoteModel)
+    suspend fun deleteNote(note: NoteModel)
+
+    @Query("DELETE FROM noteModel WHERE id = :noteId")
+    suspend fun deleteNoteById(noteId: Int)
 
     @Update
     fun updateNote(noteModel: NoteModel)
 
     @Query("SELECT * FROM notemodel WHERE id = :id")
     fun getNoteById(id: Int?):NoteModel?
+
+    @Query("UPDATE noteModel SET color = :color WHERE id = :noteId")
+    suspend fun updateColor(noteId: Int, color: Int)
+
+    @Query("SELECT * FROM noteModel WHERE id = :id")
+    suspend fun getNoteById(id: Int): NoteModel?
 
 }

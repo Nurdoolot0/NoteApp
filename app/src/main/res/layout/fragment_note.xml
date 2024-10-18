@@ -57,8 +57,7 @@
 
     </LinearLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="13sp">
@@ -66,19 +65,21 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_btn"
+            style="@style/MyFabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="18dp"
+            android:layout_margin="26dp"
+            app:fabCustomSize="58dp"
+            android:contentDescription="crazy"
             android:src="@drawable/ic_add" />
 
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 
 
 </LinearLayout>

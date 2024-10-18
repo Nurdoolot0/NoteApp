@@ -20,7 +20,6 @@ class NoteAdapter(private val onLongClick: OnClickItem,
         fun onBind(item: NoteModel) {
             binding.txtTitle.text = item.title
             binding.txtDescription.text = item.description
-
             item.color?.let { binding.cardView.setCardBackgroundColor(it) }
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
@@ -43,21 +42,17 @@ class NoteAdapter(private val onLongClick: OnClickItem,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        val note = getItem(position)
+        holder.onBind(note)
         holder.itemView.setOnLongClickListener {
-            onLongClick.onLongClick(getItem(position))
+            onLongClick.onLongClick(note)
             true
         }
-        holder.itemView.setOnClickListener{
-            onClick.onClick(getItem(position))
+        holder.itemView.setOnClickListener {
+            onClick.onClick(note)
         }
     }
 
-    fun updateItemColor(position: Int, color: Int) {
-        val item = getItem(position)
-        item.color = color
-        notifyItemChanged(position)
-    }
 
     class DiffCallBack : DiffUtil.ItemCallback<NoteModel>() {
         override fun areItemsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {

@@ -1,6 +1,8 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class NoteDetailFragment : Fragment() {
 
@@ -34,6 +38,12 @@ class NoteDetailFragment : Fragment() {
         updateNote()
         setupListeners()
 
+        binding.titleEt.addTextChangedListener(textWatcher)
+        binding.etDescription.addTextChangedListener(textWatcher)
+
+        updateSaveButtonVisibility()
+        updateSaveButtonVisibility()
+
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -41,7 +51,6 @@ class NoteDetailFragment : Fragment() {
         val currentTime = timeFormat.format(calendar.time)
         binding.tvDate.text = currentDate
         binding.tvTime.text = currentTime
-
         binding.btnMore.setOnClickListener {
             showColorPickerDialog()
         }
@@ -50,28 +59,66 @@ class NoteDetailFragment : Fragment() {
     private fun updateNote() {
         arguments?.let { args ->
             noteId = args.getInt("noteId", -1)
-        }
-        if (noteId != -1){
-            val argsNote = App.appDataBase?.noteDao()?.getNoteById(noteId)
-            argsNote?.let { item ->
-                binding.titleEt.setText(item.title)
-                binding.etDescription.setText(item.title)
+            if (noteId != -1) {
+                val argsNote = App.appDataBase?.noteDao()?.getNoteById(noteId)
+                argsNote?.let { item ->
+                    binding.titleEt.setText(item.title)
+                    binding.etDescription.setText(item.description)
+                    selectedColor = item.color
+                }
             }
         }
     }
 
     private fun setupListeners() = with(binding) {
-        btnAddText.setOnClickListener {
+        textSave.setOnClickListener {
             val etTitle = titleEt.text.toString()
             val etDescription = etDescription.text.toString()
-            if(noteId != -1){
-                val updateNote = NoteModel(etTitle, etDescription,  color = selectedColor)
-                updateNote.id = noteId!!
-                App.appDataBase?.noteDao()?.updateNote(updateNote)
-            } else{
-                App.appDataBase?.noteDao()?.insertNote(NoteModel(etTitle, etDescription, selectedColor))
+
+            if (noteId != -1) {
+                val updatedNote = NoteModel(etTitle, etDescription, selectedColor).apply {
+                    id = noteId!!
+                }
+                lifecycleScope.launch {
+                    App.appDataBase?.noteDao()?.updateNote(updatedNote)
+                }
+            } else {
+                val newNote = NoteModel(etTitle, etDescription, selectedColor)
+                lifecycleScope.launch {
+                    App.appDataBase?.noteDao()?.insertNote(newNote)
+                }
             }
             findNavController().navigateUp()
+        }
+        btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            updateSaveButtonVisibility()
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
+    }
+
+    private fun updateSaveButtonVisibility() {
+        val isTitleFilled = binding.titleEt.text.toString().isNotEmpty()
+        val isNoteFilled = binding.etDescription.text.toString().isNotEmpty()
+
+        if (isTitleFilled && isNoteFilled) {
+            binding.textSave.visibility = View.VISIBLE
+            val params = binding.btnMore.layoutParams as ViewGroup.MarginLayoutParams
+            params.marginEnd = 24
+            binding.btnMore.layoutParams = params
+        } else {
+            binding.textSave.visibility = View.GONE
+            val params = binding.btnMore.layoutParams as ViewGroup.MarginLayoutParams
+            params.marginEnd = 8
+            binding.btnMore.layoutParams = params
         }
     }
 

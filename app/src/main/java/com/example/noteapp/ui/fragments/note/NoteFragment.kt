@@ -14,12 +14,15 @@ import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.databinding.FragmentNoteBinding
 import com.example.noteapp.ui.adapters.NoteAdapter
 import com.example.noteapp.ui.intetface.OnClickItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NoteFragment : Fragment(), OnClickItem {
 
     private lateinit var binding: FragmentNoteBinding
     private val noteAdapter = NoteAdapter(this, this)
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,10 +39,7 @@ class NoteFragment : Fragment(), OnClickItem {
         getData()
         binding.addBtn.bringToFront()
         binding.addBtn.show()
-
-
     }
-
 
     private fun initialize() {
         binding.recyclerView.apply {
@@ -49,12 +49,9 @@ class NoteFragment : Fragment(), OnClickItem {
     }
 
     private fun setupListeners() = with(binding) {
-        addBtn.show()
-        addBtn.bringToFront()
         addBtn.setOnClickListener {
             findNavController().navigate(R.id.action_noteFragment_to_noteDetailFragment)
         }
-
     }
 
     private fun getData() {
@@ -68,7 +65,12 @@ class NoteFragment : Fragment(), OnClickItem {
         with(builder) {
             setTitle("Удалить заметку?")
             setPositiveButton("Удалить") { _, _ ->
-                App.appDataBase?.noteDao()?.deleteNote(noteModel)
+                CoroutineScope(Dispatchers.IO).launch {
+                    App.appDataBase?.noteDao()?.deleteNote(noteModel)
+                    withContext(Dispatchers.Main) {
+                        getData()
+                    }
+                }
             }
             setNegativeButton("Отмена") { dialog, _ ->
                 dialog.cancel()
@@ -77,11 +79,9 @@ class NoteFragment : Fragment(), OnClickItem {
         }
         builder.create()
     }
-
     override fun onClick(noteModel: NoteModel) {
         val action =
             NoteFragmentDirections.actionNoteFragmentToNoteDetailFragment(noteModel.id)
         findNavController().navigate(action)
-
     }
 }
