@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#252525"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.signup.SignUpFragment">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="76sp"
+        android:fontFamily="@font/potta_one"
+        android:gravity="center_horizontal"
+        android:text="Notes"
+        android:textColor="@color/white"
+        android:textSize="28sp" />
+
+    <ImageView
+        android:layout_width="180sp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="-900sp"
+        android:src="@drawable/image_9" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="21sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-340sp"
+        android:fontFamily="@font/roboto_thin"
+        android:text="Авторизация"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signup_button"
+        android:layout_width="179sp"
+        android:layout_height="56sp"
+        android:backgroundTint="@color/white"
+        android:layout_marginLeft="115sp"
+        android:layout_marginTop="150sp"
+        app:icon="@drawable/googleg_standard_color_18"
+        app:iconSize="20sp"
+        app:iconTint="@null"
+        android:padding="10dp"
+        android:strokeWidth="1"
+        android:strokeColor="@color/grey"
+        android:text="Sign in with Google"
+        android:textColor="@color/black"
+        app:cornerRadius="70sp"
+        />
+
+
+</LinearLayout>

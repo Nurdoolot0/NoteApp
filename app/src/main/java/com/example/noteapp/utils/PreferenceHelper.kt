@@ -7,7 +7,7 @@ class PreferenceHelper {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    fun unit(context: Context) {
+    fun init(context: Context) {
         sharedPreferences = context.getSharedPreferences("shared", Context.MODE_PRIVATE)
     }
 
@@ -18,4 +18,8 @@ class PreferenceHelper {
     var text: String?
         get() = sharedPreferences.getString("text", "")
         set(value) = sharedPreferences.edit().putString("text", value)!!.apply()
+
+    var isLinearLayout: Boolean
+        get() = sharedPreferences.getBoolean("isLinearLayout", true)
+        set(value) = sharedPreferences.edit().putBoolean("isLinearLayout", value).apply()
 }

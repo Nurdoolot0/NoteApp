@@ -1,14 +1,14 @@
 package com.example.noteapp.ui.fragments.onboard
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentOnBoardBinding
-import com.example.noteapp.ui.activity.MainActivity
 import com.example.noteapp.ui.adapters.OnBoardPagerAdapter
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
@@ -35,8 +35,8 @@ class OnBoardFragment : Fragment() {
         val dotsIndicator: WormDotsIndicator = binding.dotsIndicator
         dotsIndicator.setViewPager2(binding.viewpager2)
 
-
-         binding.btnStart.visibility = View.GONE
+        // Прячем кнопку при запуске
+        binding.btnStart.visibility = View.GONE
     }
 
     private fun setupListeners() = with(binding.viewpager2) {
@@ -44,25 +44,35 @@ class OnBoardFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
+                // Показываем кнопку только на последнем экране
                 if (position == 2) {
                     binding.btnStart.visibility = View.VISIBLE
                 } else {
                     binding.btnStart.visibility = View.GONE
                 }
 
+                // Скрываем текст "Пропустить" на последнем экране
                 binding.txtSkip.visibility = if (position == 2) View.INVISIBLE else View.VISIBLE
             }
         })
 
+        // Логика кнопки "Пропустить"
         binding.txtSkip.setOnClickListener {
             if (currentItem < 2) {
                 setCurrentItem(currentItem + 2, true)
             }
         }
 
+        // Логика кнопки "Начать"
         binding.btnStart.setOnClickListener {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            requireActivity().finish()
+            // Переход на SignUpFragment и очистка всего стека фрагментов
+            findNavController().navigate(
+                R.id.action_onBoardFragment_to_signUpFragment,
+                null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.nav_host_fragment, true)  // Очистить весь стек, включая NoteFragment
+                    .build()
+            )
         }
-    }
-}
+            }
+        }
