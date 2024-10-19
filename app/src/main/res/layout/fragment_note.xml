@@ -26,7 +26,6 @@
             android:src="@drawable/ic_menu"
             app:tint="@android:color/white" />
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,23 +38,36 @@
 
         <ImageView
             android:id="@+id/menu_switch_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
             android:layout_gravity="end"
-            android:layout_marginStart="67dp"
-            android:background="@drawable/menu_icon"
-            android:contentDescription="Переключение вида" />
+            android:layout_marginStart="96sp"
+            android:background="@drawable/grid_lay"
+            android:contentDescription="Переключение вида"
+            android:translationY="20sp" />
+
+        <ImageView
+            android:id="@+id/set_ic"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="-20sp"
+            android:background="@drawable/ic_set"
+            android:contentDescription="Переключение вида"
+            android:translationY="20sp" />
+
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_note"
             android:layout_width="370sp"
             android:layout_height="60dp"
-            android:layout_marginStart="-365dp"
+            android:layout_marginStart="-362sp"
             android:layout_marginTop="66dp"
             android:background="@drawable/search_background"
             android:queryHint="Поиск заметок" />
 
     </LinearLayout>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -74,9 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="26dp"
-            app:fabCustomSize="58dp"
             android:contentDescription="crazy"
-            android:src="@drawable/ic_add" />
+            android:src="@drawable/ic_add"
+            app:fabCustomSize="58dp" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

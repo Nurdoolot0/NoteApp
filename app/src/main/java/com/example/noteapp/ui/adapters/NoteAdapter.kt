@@ -1,8 +1,8 @@
 package com.example.noteapp.ui.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.graphics.component1
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,14 +13,21 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class NoteAdapter(private val onLongClick: OnClickItem,
-                  private val onClick: OnClickItem) : ListAdapter<NoteModel, NoteAdapter.ViewHolder>(DiffCallBack()) {
+class NoteAdapter(
+    private val onLongClick: OnClickItem,
+    private val onClick: OnClickItem
+) : ListAdapter<NoteModel, NoteAdapter.ViewHolder>(DiffCallBack()) {
+    private var isLinearLayout: Boolean = true
+    fun setLayoutType(isLinear: Boolean) {
+        isLinearLayout = isLinear
+    }
 
     class ViewHolder(private val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(item: NoteModel) {
+        fun onBind(item: NoteModel, isLinearLayout: Boolean) {
             binding.txtTitle.text = item.title
             binding.txtDescription.text = item.description
             item.color?.let { binding.cardView.setCardBackgroundColor(it) }
+
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -28,6 +35,15 @@ class NoteAdapter(private val onLongClick: OnClickItem,
             val currentTime = timeFormat.format(calendar.time)
             binding.txtDate.text = currentDate
             binding.txtTime.text = currentTime
+
+
+            val layoutParams = binding.root.layoutParams
+            if (isLinearLayout) {
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            } else {
+
+            }
+            binding.root.layoutParams = layoutParams
         }
     }
 
@@ -42,17 +58,20 @@ class NoteAdapter(private val onLongClick: OnClickItem,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val note = getItem(position)
-        holder.onBind(note)
-        holder.itemView.setOnLongClickListener {
-            onLongClick.onLongClick(note)
-            true
-        }
-        holder.itemView.setOnClickListener {
-            onClick.onClick(note)
+        if (position < currentList.size) {
+            val note = getItem(position)
+            holder.onBind(note, isLinearLayout)
+            holder.itemView.setOnLongClickListener {
+                onLongClick.onLongClick(note)
+                true
+            }
+            holder.itemView.setOnClickListener {
+                onClick.onClick(note)
+            }
+        } else {
+            Log.e("NoteAdapter", "Invalid position: $position for list of size ${currentList.size}")
         }
     }
-
 
     class DiffCallBack : DiffUtil.ItemCallback<NoteModel>() {
         override fun areItemsTheSame(oldItem: NoteModel, newItem: NoteModel): Boolean {

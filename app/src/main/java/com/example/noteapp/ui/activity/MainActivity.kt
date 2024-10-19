@@ -3,7 +3,6 @@ package com.example.noteapp.ui.activity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.convertTo
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.noteapp.R
@@ -18,25 +17,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sharedPreferences = PreferenceHelper()
-        sharedPreferences.unit(this)
+        sharedPreferences.init(this)
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
         if (sharedPreferences.isFirstLaunch) {
             navController.navigate(R.id.onBoardFragment)
-            sharedPreferences.isFirstLaunch = false
         } else {
             navController.navigate(R.id.noteFragment)
         }
-    onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            val currentFragment = navController.currentDestination?.id
-            if (currentFragment == R.id.noteFragment) {
-                finish()
-            } else {
-                navController.navigateUp()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val currentFragment = navController.currentDestination?.id
+                if (currentFragment == R.id.noteFragment ||
+                    currentFragment == R.id.onBoardFragment
+                ) {
+                    finish()
+                } else {
+                    navController.navigateUp()
+                }
             }
-        }
-    })
-}
+        })
+    }
 }
