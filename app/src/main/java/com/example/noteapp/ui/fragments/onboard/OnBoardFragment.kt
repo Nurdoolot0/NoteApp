@@ -35,7 +35,7 @@ class OnBoardFragment : Fragment() {
         val dotsIndicator: WormDotsIndicator = binding.dotsIndicator
         dotsIndicator.setViewPager2(binding.viewpager2)
 
-        // Прячем кнопку при запуске
+
         binding.btnStart.visibility = View.GONE
     }
 
@@ -43,34 +43,28 @@ class OnBoardFragment : Fragment() {
         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
-                // Показываем кнопку только на последнем экране
                 if (position == 2) {
                     binding.btnStart.visibility = View.VISIBLE
                 } else {
                     binding.btnStart.visibility = View.GONE
                 }
 
-                // Скрываем текст "Пропустить" на последнем экране
                 binding.txtSkip.visibility = if (position == 2) View.INVISIBLE else View.VISIBLE
             }
         })
 
-        // Логика кнопки "Пропустить"
         binding.txtSkip.setOnClickListener {
             if (currentItem < 2) {
                 setCurrentItem(currentItem + 2, true)
             }
         }
 
-        // Логика кнопки "Начать"
         binding.btnStart.setOnClickListener {
-            // Переход на SignUpFragment и очистка всего стека фрагментов
             findNavController().navigate(
                 R.id.action_onBoardFragment_to_signUpFragment,
                 null,
                 androidx.navigation.NavOptions.Builder()
-                    .setPopUpTo(R.id.nav_host_fragment, true)  // Очистить весь стек, включая NoteFragment
+                    .setPopUpTo(R.id.nav_host_fragment, true)
                     .build()
             )
         }

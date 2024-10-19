@@ -82,6 +82,7 @@ class NoteFragment : Fragment(), OnClickItem {
         } else {
             binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         }
+        noteAdapter.notifyDataSetChanged()
     }
 
     private fun updateSwitchIcon() {
@@ -107,7 +108,9 @@ class NoteFragment : Fragment(), OnClickItem {
 
     private fun getData() {
         App.appDataBase?.noteDao()?.getAll()?.observe(viewLifecycleOwner) { listNote ->
-            noteAdapter.submitList(listNote)
+            noteAdapter.submitList(listNote){
+                noteAdapter.notifyDataSetChanged()
+            }
         }
     }
 
