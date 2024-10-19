@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.adapters
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,7 +28,8 @@ class NoteAdapter(
             binding.txtTitle.text = item.title
             binding.txtDescription.text = item.description
             item.color?.let { binding.cardView.setCardBackgroundColor(it) }
-
+            val backgroundColor = item.color ?: Color.WHITE
+            binding.cardView.setCardBackgroundColor(backgroundColor)
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -35,8 +37,6 @@ class NoteAdapter(
             val currentTime = timeFormat.format(calendar.time)
             binding.txtDate.text = currentDate
             binding.txtTime.text = currentTime
-
-
             val layoutParams = binding.root.layoutParams
             if (isLinearLayout) {
                 layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
