@@ -1,11 +1,23 @@
 package com.example.noteapp.ui.fragments.note
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +27,7 @@ import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.databinding.FragmentNoteBinding
 import com.example.noteapp.ui.adapters.NoteAdapter
 import com.example.noteapp.ui.intetface.OnClickItem
+import com.example.noteapp.ui.viewmodels.NoteViewModel
 import com.example.noteapp.utils.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +40,43 @@ class NoteFragment : Fragment(), OnClickItem {
     private val noteAdapter = NoteAdapter(this, this)
     private var isLinearLayout = true
     private lateinit var preferenceHelper: PreferenceHelper
+    private val viewModel: NoteViewModel by viewModels()
+
+    private val notificationReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val title = intent?.getStringExtra("title") ?: "Новое уведомление"
+            val message = intent?.getStringExtra("message") ?: "Новое сообщение"
+            showNotificationDialog(title, message)
+            if (context != null) {
+                showNotification(context, title, message)
+            }
+}
+        private fun showNotification(context: Context, title: String, message: String) {
+            val channelId = "my_channel_id"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val name = "MyChannel"
+                val descriptionText = "Channel for app notifications"
+                val importance = NotificationManager.IMPORTANCE_DEFAULT
+                val channel = NotificationChannel(channelId, name, importance).apply {
+                    description = descriptionText
+                }
+                val notificationManager: NotificationManager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(context)) {
+                notify(1, builder.build())
+            }
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +94,23 @@ class NoteFragment : Fragment(), OnClickItem {
         initialize()
         setupListeners()
         getData()
+
+        viewModel.notificationTitle.observe(viewLifecycleOwner, Observer { title ->
+            viewModel.notificationMessage.observe(viewLifecycleOwner, Observer { message ->
+                showNotificationDialog(title, message)
+            })
+        })
+
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(notificationReceiver, IntentFilter("PushNotification"))
+
         binding.addBtn.bringToFront()
         binding.addBtn.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(notificationReceiver)
     }
 
     private fun initialize() {
@@ -60,27 +125,27 @@ class NoteFragment : Fragment(), OnClickItem {
         }
 
         menuSwitchIcon.setOnClickListener {
-            isLinearLayout = !isLinearLayout
-            setRecyclerViewLayoutManager()
-            noteAdapter.setLayoutType(isLinearLayout)
-            updateSwitchIcon()
-            saveLayoutState(isLinearLayout)
+            toggleLayoutType()
         }
 
         setIc.setOnClickListener {
-            isLinearLayout = !isLinearLayout
-            setRecyclerViewLayoutManager()
-            noteAdapter.setLayoutType(isLinearLayout)
-            updateSwitchIcon()
-            saveLayoutState(isLinearLayout)
+            toggleLayoutType()
         }
     }
 
+    private fun toggleLayoutType() {
+        isLinearLayout = !isLinearLayout
+        setRecyclerViewLayoutManager()
+        noteAdapter.setLayoutType(isLinearLayout)
+        updateSwitchIcon()
+        saveLayoutState(isLinearLayout)
+    }
+
     private fun setRecyclerViewLayoutManager() {
-        if (isLinearLayout) {
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = if (isLinearLayout) {
+            LinearLayoutManager(requireContext())
         } else {
-            binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+            GridLayoutManager(requireContext(), 2)
         }
         noteAdapter.notifyDataSetChanged()
     }
@@ -94,7 +159,6 @@ class NoteFragment : Fragment(), OnClickItem {
             binding.setIc.setImageResource(R.drawable.ic_set)
             binding.menuSwitchIcon.visibility = View.INVISIBLE
             binding.setIc.visibility = View.VISIBLE
-
         }
     }
 
@@ -108,9 +172,21 @@ class NoteFragment : Fragment(), OnClickItem {
 
     private fun getData() {
         App.appDataBase?.noteDao()?.getAll()?.observe(viewLifecycleOwner) { listNote ->
-            noteAdapter.submitList(listNote){
+            noteAdapter.submitList(listNote) {
                 noteAdapter.notifyDataSetChanged()
             }
+        }
+    }
+
+    private fun showNotificationDialog(title: String, message: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        with(builder) {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
         }
     }
 
