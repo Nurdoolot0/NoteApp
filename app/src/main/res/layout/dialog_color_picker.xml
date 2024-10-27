@@ -1,73 +1,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="250sp"
+    android:layout_height="240sp"
     android:orientation="vertical"
-    android:background="#5B5B5B"
+    android:background="@drawable/container_background"
     android:padding="16dp">
+
+    <TextView
+        android:id="@+id/deleteNoteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF3B3B"
+        android:textSize="18sp"
+        android:paddingBottom="6sp"
+        android:text="Удалить" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#B0B0B0" />
 
     <TextView
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выберите цвет"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
+        android:text="Поменять цвет"
+        android:paddingTop="6sp"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
         android:paddingBottom="16dp"/>
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="3"
+        android:orientation="vertical"
         android:rowCount="2">
 
-        <View
-            android:id="@+id/colorButton1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#FF0000"
-            android:layout_margin="8dp"/>
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:orientation="vertical"
+            android:rowCount="2"
+            android:layout_marginBottom="16dp">
 
-        <View
-            android:id="@+id/colorButton2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#00FF00"
-            android:layout_margin="8dp"/>
+            <View
+                android:id="@+id/colorButton1"
+                android:layout_width="60sp"
+                android:layout_height="50sp"
+                android:background="@drawable/color_red_background"
+                android:layout_margin="4dp"/>
 
-        <View
-            android:id="@+id/colorButton3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#0000FF"
-            android:layout_margin="8dp"/>
+            <View
+                android:id="@+id/colorButton2"
+                android:layout_width="60sp"
+                android:layout_height="50sp"
+                android:background="@drawable/color_green_background"
+                android:layout_margin="4dp"/>
 
-        <View
-            android:id="@+id/colorButton4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#FFFF00"
-            android:layout_margin="8dp"/>
+            <View
+                android:id="@+id/colorButton3"
+                android:layout_width="60sp"
+                android:layout_height="50sp"
+                android:background="@drawable/color_blue_background"
+                android:layout_margin="4dp"/>
 
-        <View
-            android:id="@+id/colorButton5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#00FFFF"
-            android:layout_margin="8dp"/>
+            <View
+                android:id="@+id/colorButton4"
+                android:layout_width="60sp"
+                android:layout_height="50sp"
+                android:background="@drawable/color_yellow_background"
+                android:layout_margin="4dp"/>
 
-        <View
-            android:id="@+id/colorButton6"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#FF00FF"
-            android:layout_margin="8dp"/>
+            <View
+                android:id="@+id/colorButton5"
+                android:layout_width="60sp"
+                android:layout_height="50sp"
+                android:background="@drawable/color_cyan_background"
+                android:layout_margin="4dp"/>
+
+            <View
+                android:id="@+id/colorButton6"
+                android:layout_width="60sp"
+                android:layout_height="50sp"
+                android:background="@drawable/color_magenta_background"
+                android:layout_margin="4dp"/>
+        </GridLayout>
 
     </GridLayout>
-
-    <Button
-        android:id="@+id/deleteNoteBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Удалить"
-        android:layout_marginTop="16dp"/>
 </LinearLayout>

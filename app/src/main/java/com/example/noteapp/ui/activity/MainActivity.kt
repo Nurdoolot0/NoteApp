@@ -27,19 +27,30 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = PreferenceHelper()
         sharedPreferences.init(this)
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        if (sharedPreferences.isFirstLaunch) {
-            navController.navigate(R.id.onBoardFragment)
-        } else {
-            navController.navigate(R.id.noteFragment)
+
+        when {
+            !sharedPreferences.isOnBoardShown() -> {
+                navController.navigate(R.id.onBoardFragment)
+            }
+            !sharedPreferences.isSignedUp() -> {
+                navController.navigate(R.id.signUpFragment)
+            }
+            else -> {
+                navController.navigate(R.id.noteFragment)
+            }
+
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val currentFragment = navController.currentDestination?.id
-                if (currentFragment == R.id.noteFragment || currentFragment == R.id.onBoardFragment) {
+                if (currentFragment == R.id.signUpFragment) {
+                    finish()
+                } else if (currentFragment == R.id.onBoardFragment) {
                     finish()
                 } else {
                     navController.navigateUp()
@@ -48,13 +59,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            } else {
-                setupFirebaseMessaging()
-            }
-        } else {
-            setupFirebaseMessaging()
         }
     }
 

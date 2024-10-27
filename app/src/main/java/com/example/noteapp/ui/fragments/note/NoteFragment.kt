@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.note
 
+import android.Manifest
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,14 +8,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -50,7 +53,8 @@ class NoteFragment : Fragment(), OnClickItem {
             if (context != null) {
                 showNotification(context, title, message)
             }
-}
+        }
+
         private fun showNotification(context: Context, title: String, message: String) {
             val channelId = "my_channel_id"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -75,7 +79,6 @@ class NoteFragment : Fragment(), OnClickItem {
                 notify(1, builder.build())
             }
         }
-
     }
 
     override fun onCreateView(
@@ -90,6 +93,15 @@ class NoteFragment : Fragment(), OnClickItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (shouldShowNotificationPermission() && ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestNotificationPermission()
+        }
+        var notificationTitle = requestNotificationPermission()
+
         loadLayoutState()
         initialize()
         setupListeners()
@@ -190,6 +202,33 @@ class NoteFragment : Fragment(), OnClickItem {
         }
     }
 
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                REQUEST_NOTIFICATION_PERMISSION
+            )
+        }
+    }
+
+    private fun shouldShowNotificationPermission(): Boolean {
+        val isFirstTime = preferenceHelper.getBoolean("isFirstTimeNoteFragment", true)
+        if (isFirstTime) {
+            preferenceHelper.putBoolean("isFirstTimeNoteFragment", false)
+        }
+        return isFirstTime
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION &&
+            grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+        }
+    }
+
     override fun onLongClick(noteModel: NoteModel) {
         val builder = AlertDialog.Builder(requireContext())
         with(builder) {
@@ -214,5 +253,9 @@ class NoteFragment : Fragment(), OnClickItem {
         val action =
             NoteFragmentDirections.actionNoteFragmentToNoteDetailFragment(noteModel.id)
         findNavController().navigate(action)
+    }
+
+    companion object {
+        private const val REQUEST_NOTIFICATION_PERMISSION = 1
     }
 }

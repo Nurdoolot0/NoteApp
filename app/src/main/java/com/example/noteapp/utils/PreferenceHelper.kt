@@ -22,4 +22,28 @@ class PreferenceHelper {
     var isLinearLayout: Boolean
         get() = sharedPreferences.getBoolean("isLinearLayout", true)
         set(value) = sharedPreferences.edit().putBoolean("isLinearLayout", value).apply()
+
+    fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    fun putBoolean(key: String, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
+    fun isOnBoardShown(): Boolean {
+        return sharedPreferences.getBoolean("has_seen_onboard", false)
+    }
+
+    fun setOnBoardShown(shown: Boolean) {
+        sharedPreferences.edit().putBoolean("has_seen_onboard", shown).apply()
+    }
+
+    fun isSignedUp(): Boolean {
+        return sharedPreferences.getBoolean("is_signed_up", false)
+    }
+
+    fun setSignedUp(signedUp: Boolean) {
+        sharedPreferences.edit().putBoolean("is_signed_up", signedUp).apply()
+    }
 }
