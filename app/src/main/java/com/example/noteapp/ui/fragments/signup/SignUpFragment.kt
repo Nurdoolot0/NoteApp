@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
@@ -56,6 +58,9 @@ class SignUpFragment : Fragment() {
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
         sharedPreferences = PreferenceHelper()
         sharedPreferences.init(requireContext())
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
 
         return binding.root
     }
@@ -63,6 +68,7 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+
     }
 
     private fun setupListeners() {
@@ -93,4 +99,6 @@ class SignUpFragment : Fragment() {
             Toast.makeText(requireContext(), "Аутентификация не удалась", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 }

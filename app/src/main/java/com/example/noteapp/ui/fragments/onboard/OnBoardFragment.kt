@@ -10,11 +10,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentOnBoardBinding
 import com.example.noteapp.ui.adapters.OnBoardPagerAdapter
+import com.example.noteapp.utils.PreferenceHelper
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
 class OnBoardFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardBinding
+    private lateinit var preferenceHelper: PreferenceHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +30,10 @@ class OnBoardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initialize()
         setupListeners()
+        preferenceHelper = PreferenceHelper()
+        preferenceHelper.init(requireContext())
+        preferenceHelper.setOnBoardShown(true)
+
     }
 
     private fun initialize() {
